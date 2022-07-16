@@ -17,8 +17,8 @@ class ProductGrid extends StatelessWidget {
         crossAxisSpacing: 10,
         childAspectRatio: 3 / 2,
       ),
-      itemBuilder: (ctx, i) =>ChangeNotifierProvider(
-        create: (c) => products[i],
+      itemBuilder: (ctx, i) =>ChangeNotifierProvider.value(
+        value: products[i],
         child:ProductItem(
           // products[i].id, 
           // products[i].title, 
