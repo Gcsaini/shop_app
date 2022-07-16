@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import './cart_screen.dart';
 import '../Widgets/product_grid.dart';
 import 'package:provider/provider.dart';
-import '../Providers/products.dart';
+import '../Widgets/badge.dart';
+import '../Providers/cart.dart';
 
 enum filterOptions {
   Favrioute,
@@ -21,6 +23,19 @@ class _ProductOveriewScreenState extends State<ProductOveriewScreen> {
       appBar: AppBar(
         title: Text('Shop app'),
         actions: [
+          Consumer<Cart>(
+            builder: (_, cart, ch) => Badge(
+              child: ch,
+              color: Colors.red,
+              value: cart.itemCount.toString(),
+            ),
+            child: IconButton(
+              icon: Icon(Icons.shopping_cart, color: Colors.white),
+              onPressed: () {
+                Navigator.of(context).pushNamed(CartScreen.routeName);
+              },
+            ),
+          ),
           PopupMenuButton(
             itemBuilder: (_) => [
               PopupMenuItem(
@@ -35,11 +50,11 @@ class _ProductOveriewScreenState extends State<ProductOveriewScreen> {
             icon: Icon(Icons.more_vert),
             onSelected: (filterOptions selectedValue) {
               setState(() {
-                if (selectedValue == filterOptions.Favrioute) { 
-                _showFavriouteOnly = true;
-              } else {
-                _showFavriouteOnly = false;
-              }
+                if (selectedValue == filterOptions.Favrioute) {
+                  _showFavriouteOnly = true;
+                } else {
+                  _showFavriouteOnly = false;
+                }
               });
             },
           ),
