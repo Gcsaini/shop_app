@@ -4,6 +4,7 @@ import '../Widgets/product_grid.dart';
 import 'package:provider/provider.dart';
 import '../Widgets/badge.dart';
 import '../Providers/cart.dart';
+import '../Widgets/app_drawer.dart';
 
 enum filterOptions {
   Favrioute,
@@ -21,7 +22,7 @@ class _ProductOveriewScreenState extends State<ProductOveriewScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Shop app'),
+        title: Text('My shop', style: TextStyle(fontSize: 16),),
         actions: [
           Consumer<Cart>(
             builder: (_, cart, ch) => Badge(
@@ -60,6 +61,7 @@ class _ProductOveriewScreenState extends State<ProductOveriewScreen> {
           ),
         ],
       ),
+      drawer: AppDrawer(),
       body: ProductGrid(_showFavriouteOnly),
     );
   }
