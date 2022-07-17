@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import './add_edit_product_screen.dart';
 import '../Widgets/app_drawer.dart';
 import '../Widgets/user_product_item.dart';
 import 'package:provider/provider.dart';
@@ -13,10 +14,15 @@ class UserProductScreen extends StatelessWidget {
     final productData = Provider.of<Products>(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Manage Products',style: TextStyle(fontSize: 20),),
+        title: const Text(
+          'Manage Products',
+          style: TextStyle(fontSize: 20),
+        ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).pushNamed(AddEditProductScreen.routeName);
+            },
             icon: const Icon(Icons.add),
           )
         ],
@@ -25,11 +31,12 @@ class UserProductScreen extends StatelessWidget {
       body: Padding(
         padding: EdgeInsets.all(15),
         child: ListView.builder(
-          itemBuilder: (_, i) =>Column(
-            children:[
-              UserProductItem(productData.items[i].title, productData.items[i].imageUrl),
+          itemBuilder: (_, i) => Column(
+            children: [
+              UserProductItem(
+                  productData.items[i].title, productData.items[i].imageUrl),
               Divider(),
-          ],
+            ],
           ),
           itemCount: productData.items.length,
         ),
