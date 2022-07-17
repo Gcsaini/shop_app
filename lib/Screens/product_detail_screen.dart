@@ -32,7 +32,7 @@ class ProductDetailScreen extends StatelessWidget {
             height: 20,
           ),
           Text(
-            '\$${filteredProduct.price}',
+            '\₹${filteredProduct.price}',
             style: TextStyle(
               fontSize: 18,
               color: Colors.blueGrey,
