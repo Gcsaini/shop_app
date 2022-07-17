@@ -52,4 +52,9 @@ class Cart with ChangeNotifier {
     });
     return total;
   }
+
+  void removeitem(String productId) {
+    _items.remove(productId);
+    notifyListeners();
+  }
 }
