@@ -1,0 +1,39 @@
+import 'package:flutter/material.dart';
+import '../Widgets/app_drawer.dart';
+import '../Widgets/user_product_item.dart';
+import 'package:provider/provider.dart';
+import '../Providers/products.dart';
+
+class UserProductScreen extends StatelessWidget {
+  static const routeName = '/user-product-screen';
+  const UserProductScreen({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final productData = Provider.of<Products>(context);
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Manage Products',style: TextStyle(fontSize: 20),),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.add),
+          )
+        ],
+      ),
+      drawer: AppDrawer(),
+      body: Padding(
+        padding: EdgeInsets.all(15),
+        child: ListView.builder(
+          itemBuilder: (_, i) =>Column(
+            children:[
+              UserProductItem(productData.items[i].title, productData.items[i].imageUrl),
+              Divider(),
+          ],
+          ),
+          itemCount: productData.items.length,
+        ),
+      ),
+    );
+  }
+}
