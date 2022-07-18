@@ -41,13 +41,19 @@ class Products with ChangeNotifier {
     return [..._items];
   }
 
-  List<Product> get showFavrioutes{
+  List<Product> get showFavrioutes {
     return _items.where((item) => item.isFavrioute).toList();
-    
   }
 
-  void addProduct() {
+  void addProduct(Product product) {
+    final newProduct = Product(
+        id: DateTime.now().toString(),
+        title: product.title,
+        description: product.description,
+        imageUrl: product.imageUrl,
+        price: product.price);
     // _items.add(_items);
+    _items.add(newProduct);
     notifyListeners();
   }
 

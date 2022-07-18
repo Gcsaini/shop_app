@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../Providers/products.dart';
 import '../Providers/product.dart';
 
 class AddEditProductScreen extends StatefulWidget {
@@ -26,7 +28,7 @@ class _AddEditProductScreenState extends State<AddEditProductScreen> {
 
   void _updateImageUrl() {
     if (!_imageFocusNode.hasFocus) {
-      if (!_imageController.text.isEmpty ||
+      if (_imageController.text.isEmpty ||
           (!_imageController.text.startsWith('http') &&
               !_imageController.text.startsWith('https')) ||
           (!_imageController.text.endsWith('.jpg') &&
@@ -54,7 +56,8 @@ class _AddEditProductScreenState extends State<AddEditProductScreen> {
       return;
     }
     _form.currentState.save();
-    print(_editProduct.title);
+    Provider.of<Products>(context,listen: false).addProduct(_editProduct);
+    Navigator.of(context).pop();
   }
 
   @override
