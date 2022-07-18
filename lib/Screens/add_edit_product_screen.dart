@@ -24,18 +24,16 @@ class _AddEditProductScreenState extends State<AddEditProductScreen> {
     super.initState();
   }
 
-  @override
-  void dispose() {
-    _imageFocusNode.removeListener(_updateImageUrl);
-    _priceFocusNode.dispose();
-    _descriptionFocusNdoe.dispose();
-    _imageController.dispose();
-    _imageFocusNode.dispose();
-    super.dispose();
-  }
-
   void _updateImageUrl() {
     if (!_imageFocusNode.hasFocus) {
+      if (!_imageController.text.isEmpty ||
+          (!_imageController.text.startsWith('http') &&
+              !_imageController.text.startsWith('https')) ||
+          (!_imageController.text.endsWith('.jpg') &&
+              !_imageController.text.endsWith('.jpeg') &&
+              !_imageController.text.endsWith('.png'))) {
+        return;
+      }
       setState(() {});
     }
   }
@@ -90,8 +88,7 @@ class _AddEditProductScreenState extends State<AddEditProductScreen> {
                       title: value,
                       description: _editProduct.description,
                       imageUrl: _editProduct.imageUrl,
-                      price:_editProduct.price
-                      );
+                      price: _editProduct.price);
                 },
               ),
               TextFormField(
@@ -110,12 +107,33 @@ class _AddEditProductScreenState extends State<AddEditProductScreen> {
                       imageUrl: _editProduct.imageUrl,
                       price: double.parse(value));
                 },
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Please enter price';
+                  }
+                  if (double.tryParse(value) == null) {
+                    return 'Please enter valid number';
+                  }
+                  if (double.parse(value) <= 0) {
+                    return 'Please enter a number greater than 0';
+                  }
+                  return null;
+                },
               ),
               TextFormField(
                 decoration: InputDecoration(labelText: 'Description'),
                 maxLines: 4,
                 keyboardType: TextInputType.multiline,
                 focusNode: _descriptionFocusNdoe,
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Please enter description';
+                  }
+                  if (value.length < 10) {
+                    return 'Please enter at least 10 Char';
+                  }
+                  return null;
+                },
                 onSaved: (value) {
                   _editProduct = Product(
                       id: _editProduct.id,
