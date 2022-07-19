@@ -80,7 +80,7 @@ class _AddEditProductScreenState extends State<AddEditProductScreen> {
     ),
   );
 
-  void _submitData() {
+  Future<void> _submitData() async{
     final isValid = _form.currentState.validate();
     if (!isValid) {
       return;
@@ -97,30 +97,32 @@ class _AddEditProductScreenState extends State<AddEditProductScreen> {
       });
       Navigator.of(context).pop();
     } else {
-      Provider.of<Products>(context, listen: false)
-          .addProduct(_editProduct)
-          .catchError((error) {
-            return showDialog<Null>(
-              context: context,
-              builder: (ctx) => AlertDialog(
-                    title: Text('An error occured'),
-                    content: Text('Something went wrong.'),
-                    actions: [
-                      TextButton(
-                        onPressed: () {
-                          Navigator.of(ctx).pop();
-                        },
-                        child: Text('Okay'),
-                      )
-                    ],
-                  ),
-            );    
-      }).then((_) {
+      try {
+        await Provider.of<Products>(context, listen: false)
+        .addProduct(_editProduct);
+      }catch(error){
+        await showDialog<Null>(
+          context: context,
+          builder: (ctx) => AlertDialog(
+                title: Text('An error occured'),
+                content: Text('Something went wrong.'),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(ctx).pop();
+                    },
+                    child: Text('Okay'),
+                  )
+                ],
+            ),
+          );    
+      }finally {
         setState(() {
-          _isLoading = false;
+        _isLoading = false;
         });
         Navigator.of(context).pop();
-      });
+      }
+     
     }
   }
 

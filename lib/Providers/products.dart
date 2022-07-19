@@ -47,33 +47,36 @@ class Products with ChangeNotifier {
     return _items.where((item) => item.isFavrioute).toList();
   }
 
-  Future<void> addProduct(Product product) {
+  Future<void> addProduct(Product product) async {
     var url = Uri.parse(
         'https://flutter-app-b12b6-default-rtdb.firebaseio.com/products');
-    return http
-        .post(
-      url,
-      body: json.encode({
-        'title': product.title,
-        'price': product.price,
-        'description': product.description,
-        'imageUrl': product.imageUrl,
-        'isFavrioute': product.isFavrioute,
-      }),
-    )
-    .then((response) {
-      final newProduct = Product(
-          id: json.decode(response.body)['name'],
-          title: product.title,
-          description: product.description,
-          imageUrl: product.imageUrl,
-          price: product.price);
-      _items.add(newProduct);
-      notifyListeners();
-    }).catchError((error) {
+    try {
+      final response = await http.post(
+        url,
+        body: json.encode({
+          'title': product.title,
+          'price': product.price,
+          'description': product.description,
+          'imageUrl': product.imageUrl,
+          'isFavrioute': product.isFavrioute,
+        }),
+      );
+
+        final newProduct = Product(
+        id: json.decode(response.body)['name'],
+        title: product.title,
+        description: product.description,
+        imageUrl: product.imageUrl,
+        price: product.price);
+
+        _items.add(newProduct);
+        notifyListeners();
+
+    } catch (error) {
       print(error);
       throw error;
-    });
+    }
+  
   }
 
   Product findById(String id) {
