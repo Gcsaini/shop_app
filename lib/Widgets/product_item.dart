@@ -9,7 +9,9 @@ class ProductItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final product = Provider.of<Product>(context, listen: false);
     final cart = Provider.of<Cart>(context);
-    return ClipRRect(
+    return product==null ? Center(
+      child: Text('No products'),
+    ):ClipRRect(
       borderRadius: BorderRadius.circular(10),
       child: GridTile(
         child: GestureDetector(
@@ -53,7 +55,6 @@ class ProductItem extends StatelessWidget {
                     },
                   ),
                 ),
-                
               );
             },
             icon: Icon(

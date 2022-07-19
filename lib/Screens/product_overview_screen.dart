@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../Widgets/badge.dart';
 import '../Providers/cart.dart';
 import '../Widgets/app_drawer.dart';
+import '../Providers/products.dart';
 
 enum filterOptions {
   Favrioute,
@@ -18,11 +19,34 @@ class ProductOveriewScreen extends StatefulWidget {
 
 class _ProductOveriewScreenState extends State<ProductOveriewScreen> {
   var _showFavriouteOnly = false;
+  bool _isInit = true;
+  bool _isLoading = false;
+
+  @override
+  void didChangeDependencies() {
+    if (_isInit) {
+      setState(() {
+        _isLoading = true;
+      });
+
+      Provider.of<Products>(context).getProducts().then((_) {
+        setState(() {
+          _isLoading = false;
+        });
+      });
+    }
+    _isInit = false;
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('My shop', style: TextStyle(fontSize: 16),),
+        title: Text(
+          'My shop',
+          style: TextStyle(fontSize: 16),
+        ),
         actions: [
           Consumer<Cart>(
             builder: (_, cart, ch) => Badge(
@@ -62,7 +86,11 @@ class _ProductOveriewScreenState extends State<ProductOveriewScreen> {
         ],
       ),
       drawer: AppDrawer(),
-      body: ProductGrid(_showFavriouteOnly),
+      body: _isLoading
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : ProductGrid(_showFavriouteOnly),
     );
   }
 }
