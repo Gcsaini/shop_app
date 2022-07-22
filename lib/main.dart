@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import './/Providers/auth.dart';
+import './Screens/auth_screen.dart';
 import '../Screens/add_edit_product_screen.dart';
 import '../Screens/user_product_screen.dart';
 import './Screens/order_screen.dart';
@@ -18,35 +20,42 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (ctx)=>Products(),
-        ),
-         ChangeNotifierProvider(
-          create: (ctx)=>Cart(),
+          create: (ctx) => Auth(),
         ),
         ChangeNotifierProvider(
-          create: (ctx)=>Orders(),
+          create: (ctx) => Products(),
+        ),
+        ChangeNotifierProvider(
+          create: (ctx) => Cart(),
+        ),
+        ChangeNotifierProvider(
+          create: (ctx) => Orders(),
         ),
       ],
-      child: MaterialApp(
-        title: 'MyShop',
-        theme: ThemeData(
-            primarySwatch: Colors.blue,
-            textTheme: const TextTheme(
-              headline1: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
-              headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
-              bodyText1: TextStyle(
-                fontSize: 18.0,
-              ),
-              bodyText2: TextStyle(fontSize: 14.0),
-            )),
-        home: ProductOveriewScreen(),
-        routes: {
-          ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),
-          CartScreen.routeName:(ctx)=>CartScreen(),
-          OrderScreen.routeName:(ctx)=>OrderScreen(),
-          UserProductScreen.routeName:(ctx)=>UserProductScreen(),
-          AddEditProductScreen.routeName:(ctx)=>AddEditProductScreen(),
-        },
+      child: Consumer<Auth>(
+        builder: (ctx, auth, _) => MaterialApp(
+          title: 'MyShop',
+          theme: ThemeData(
+              primarySwatch: Colors.blue,
+              textTheme: const TextTheme(
+                headline1:
+                    TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
+                headline6:
+                    TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
+                bodyText1: TextStyle(
+                  fontSize: 18.0,
+                ),
+                bodyText2: TextStyle(fontSize: 14.0),
+              )),
+          home:auth.isAuth ? ProductOveriewScreen() :AuthScreen(),
+          routes: {
+            ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),
+            CartScreen.routeName: (ctx) => CartScreen(),
+            OrderScreen.routeName: (ctx) => OrderScreen(),
+            UserProductScreen.routeName: (ctx) => UserProductScreen(),
+            AddEditProductScreen.routeName: (ctx) => AddEditProductScreen(),
+          },
+        ),
       ),
     );
   }
