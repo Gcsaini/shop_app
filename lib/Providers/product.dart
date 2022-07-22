@@ -23,17 +23,17 @@ class Product with ChangeNotifier {
     notifyListeners();
   }
 
-  void toggleFavrioute() async {
+  Future<void> toggleFavrioute(String authToken, String user_id) async {
     final oldStatus = isFavrioute;
     isFavrioute = !isFavrioute;
     notifyListeners();
     var url = Uri.parse(
-        'https://flutter-app-b12b6-default-rtdb.firebaseio.com/products/$id.json');
+        'https://flutter-app-b12b6-default-rtdb.firebaseio.com/userFavrioutes/$user_id/$id.json?auth=$authToken');
     try {
-      final response = await http.patch(url,
-          body: json.encode({
-            'isFavrioute': isFavrioute,
-          }));
+      final response = await http.put(
+        url,
+        body: json.encode(isFavrioute),
+      );
       if (response.statusCode >= 400) {
         _setFavValue(oldStatus);
       }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import './/Providers/auth.dart';
+import './Providers/auth.dart';
 import './Screens/auth_screen.dart';
 import '../Screens/add_edit_product_screen.dart';
 import '../Screens/user_product_screen.dart';
@@ -22,15 +22,20 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (ctx) => Auth(),
         ),
-        ChangeNotifierProvider(
-          create: (ctx) => Products(),
+        ChangeNotifierProxyProvider<Auth, Products>(
+          create: (_) => Products('', '', []),
+          update: (ctx, auth, previousProducts) => Products(
+              auth.token,
+              auth.user_id,
+              previousProducts != null ? previousProducts.items : []),
         ),
         ChangeNotifierProvider(
           create: (ctx) => Cart(),
         ),
-        ChangeNotifierProvider(
-          create: (ctx) => Orders(),
-        ),
+        ChangeNotifierProxyProvider<Auth, Orders>(
+            create: (_) => Orders('', []),
+            update: (ctx, auth, previousOrder) => Orders(
+                auth.token, previousOrder != null ? previousOrder.orders : [])),
       ],
       child: Consumer<Auth>(
         builder: (ctx, auth, _) => MaterialApp(
@@ -47,7 +52,7 @@ class MyApp extends StatelessWidget {
                 ),
                 bodyText2: TextStyle(fontSize: 14.0),
               )),
-          home:auth.isAuth ? ProductOveriewScreen() :AuthScreen(),
+          home: auth.isAuth ? ProductOveriewScreen() : AuthScreen(),
           routes: {
             ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),
             CartScreen.routeName: (ctx) => CartScreen(),
