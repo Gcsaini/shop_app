@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import './Screens/splash_screen.dart';
 import './Providers/auth.dart';
 import './Screens/auth_screen.dart';
 import '../Screens/add_edit_product_screen.dart';
@@ -54,7 +55,14 @@ class MyApp extends StatelessWidget {
                 ),
                 bodyText2: TextStyle(fontSize: 14.0),
               )),
-          home: auth.isAuth ? ProductOveriewScreen() : AuthScreen(),
+          home: auth.isAuth
+              ? ProductOveriewScreen()
+              : FutureBuilder(
+                  future: auth.autoLogin(),
+                  builder: (ctx, snapshot) =>
+                      snapshot.connectionState == ConnectionState.waiting
+                          ? SplashScreen()
+                          : AuthScreen()),
           routes: {
             ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),
             CartScreen.routeName: (ctx) => CartScreen(),
