@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import '../Providers/product.dart';
 import '../Screens/product_detail_screen.dart';
@@ -23,11 +25,13 @@ class ProductItem extends StatelessWidget {
                   Navigator.of(context).pushNamed(ProductDetailScreen.routeName,
                       arguments: product.id);
                 },
-                child: FadeInImage(
-                  placeholder:
-                      AssetImage('assets/images/image_placeholder.png'),
-                  image: NetworkImage(product.imageUrl),
-                  fit: BoxFit.cover,
+                child: Hero(
+                  tag: product.id,
+                  child: FadeInImage.assetNetwork(
+                    placeholder: 'assets/images/image_placeholder.png',
+                    image: product.imageUrl,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
               footer: GridTileBar(
