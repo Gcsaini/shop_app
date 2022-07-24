@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import '../Providers/product.dart';
 import '../Screens/product_detail_screen.dart';

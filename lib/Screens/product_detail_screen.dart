@@ -15,41 +15,53 @@ class ProductDetailScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(filteredProduct.title, style: TextStyle(fontSize: 16)),
       ),
-      body: SingleChildScrollView(
-          child: Column(
-        children: [
-          Container(
-            height: 250,
-            width: double.infinity,
-            child: Hero(
-              tag: filteredProduct.id,
-              child: Image.network(
-                filteredProduct.imageUrl,
-                fit: BoxFit.cover,
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            expandedHeight: 300.0,
+            pinned: true,
+            flexibleSpace: FlexibleSpaceBar(
+              title: Text(filteredProduct.title),
+              background: Hero(
+                tag: filteredProduct.id,
+                child: Image.network(
+                  filteredProduct.imageUrl,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
           ),
-          SizedBox(
-            height: 20,
-          ),
-          Text(
-            '\₹${filteredProduct.price}',
-            style: TextStyle(
-              fontSize: 18,
-              color: Colors.blueGrey,
+          SliverList(
+            delegate: SliverChildListDelegate(
+              [
+                SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  '\₹${filteredProduct.price}',
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.blueGrey,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.all(10),
+                  child: Text(
+                    filteredProduct.description,
+                    softWrap: true,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                SizedBox(
+                  height: 800,
+                )
+              ],
             ),
           ),
-          Container(
-            width: double.infinity,
-            padding: EdgeInsets.all(10),
-            child: Text(
-              filteredProduct.description,
-              softWrap: true,
-              textAlign: TextAlign.center,
-            ),
-          )
         ],
-      )),
+      ),
     );
   }
 }
