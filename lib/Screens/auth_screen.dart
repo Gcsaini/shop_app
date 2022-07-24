@@ -106,7 +106,10 @@ class _AuthCardState extends State<AuthCard> {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: Text('An Error Occurred!',style: TextStyle(fontSize: 18),),
+        title: Text(
+          'An Error Occurred!',
+          style: TextStyle(fontSize: 18),
+        ),
         content: Text(message),
         actions: <Widget>[
           TextButton(
@@ -182,10 +185,12 @@ class _AuthCardState extends State<AuthCard> {
         borderRadius: BorderRadius.circular(10.0),
       ),
       elevation: 8.0,
-      child: Container(
-        height: _authMode == AuthMode.Signup ? 320 : 260,
+      child: AnimatedContainer(
+        duration: Duration(milliseconds: 600),
+        curve: Curves.easeIn,
+        height: _authMode == AuthMode.Signup ? 300 : 240,
         constraints:
-            BoxConstraints(minHeight: _authMode == AuthMode.Signup ? 320 : 260),
+            BoxConstraints(minHeight: _authMode == AuthMode.Signup ? 300 : 240),
         width: deviceSize.width * 0.75,
         padding: EdgeInsets.all(16.0),
         child: Form(
