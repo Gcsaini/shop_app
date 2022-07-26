@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../helpers/custom_route_transition.dart';
 import './Screens/splash_screen.dart';
 import './Providers/auth.dart';
 import './Screens/auth_screen.dart';
@@ -44,17 +45,22 @@ class MyApp extends StatelessWidget {
         builder: (ctx, auth, _) => MaterialApp(
           title: 'MyShop',
           theme: ThemeData(
-              primarySwatch: Colors.blue,
-              textTheme: const TextTheme(
-                headline1:
-                    TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
-                headline6:
-                    TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
-                bodyText1: TextStyle(
-                  fontSize: 18.0,
-                ),
-                bodyText2: TextStyle(fontSize: 14.0),
-              )),
+            primarySwatch: Colors.blue,
+            textTheme: const TextTheme(
+              headline1: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
+              headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
+              bodyText1: TextStyle(
+                fontSize: 18.0,
+              ),
+              bodyText2: TextStyle(fontSize: 14.0),
+            ),
+            pageTransitionsTheme: PageTransitionsTheme(
+              builders: {
+                TargetPlatform.android: CustomPageTransitionBuilder(),
+                TargetPlatform.iOS: CustomPageTransitionBuilder(),
+              },
+            ),
+          ),
           home: auth.isAuth
               ? ProductOveriewScreen()
               : FutureBuilder(
